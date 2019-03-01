@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace EasyOTP;
 
 interface TOTPValidResultInterface extends TOTPResultInterface {
-	public function getTimeSlot(): int;
+	public function getCounter(): int;
 
-	public function getTimeDrift(): int;
+	public function getDrift(): int;
 }

@@ -27,25 +27,26 @@ namespace EasyOTP;
 class TOTPValidResult implements TOTPValidResultInterface {
 
 	/** @var int */
-	private $timeSlot;
-	/** @var int */
-	private $timeDrift;
+	private $counter;
 
-	public function __construct(int $timeSlot, int $timeDrift) {
-		$this->timeSlot = $timeSlot;
-		$this->timeDrift = $timeDrift;
+	/** @var int */
+	private $drift;
+
+	public function __construct(int $counter, int $drift) {
+		$this->counter = $counter;
+		$this->drift = $drift;
 	}
 
 	public function valid(): bool {
 		return true;
 	}
 
-	public function getTimeSlot(): int {
-		return $this->timeSlot;
+	public function getCounter(): int {
+		return $this->counter;
 	}
 
-	public function getTimeDrift(): int {
-		return $this->timeDrift;
+	public function getDrift(): int {
+		return $this->drift;
 	}
 
 }
