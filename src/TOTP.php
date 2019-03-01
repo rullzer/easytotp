@@ -48,7 +48,7 @@ class TOTP implements TOTPInterface  {
 		$this->timeService = $timeService;
 	}
 
-	public function verify(string $otp, int $drift = 1, int $minCounter = 0): TOTPResultInterface {
+	public function verify(string $otp, int $drift = 1, ?int $lastKnownCounter = null): TOTPResultInterface {
 		$currentCounter = $this->getCurrentCounter();
 
 		$start = $currentCounter - $drift;
@@ -56,7 +56,7 @@ class TOTP implements TOTPInterface  {
 
 		for ($i = $start; $i <= $end; $i++) {
 			// Skip counters smaller than the minimum
-			if ($i < $minCounter) {
+			if ($lastKnownCounter !== null && $i <= $lastKnownCounter) {
 				continue;
 			}
 
@@ -136,6 +136,11 @@ class TOTP implements TOTPInterface  {
 	}
 
 	private function getCurrentCounter(): int {
+		$x = $this->timeService->getTime();
+		$y = $x + $this->offset;
+		$z = $y / $this->timeStep;
+		$z2 = floor($z);
+		$z3 = (int)$z2;
 		return (int)floor(($this->timeService->getTime() + $this->offset) / $this->timeStep);
 	}
 

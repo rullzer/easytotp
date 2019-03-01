@@ -30,7 +30,14 @@ interface TOTPInterface {
 	public const HASH_SHA256 = 'sha256';
 	public const HASH_SHA512 = 'sha512';
 
-	public function verify(string $otp, int $drift = 1, int $minCounter = 0);
+	/**
+	 * @param string $otp The one time password to verify
+	 * @param int $drift How many windows to look back and ahead
+	 * @param int $lastKnownCounter The last known counter value (can be obtained from TOTPValidResultInterface). This
+	 * avoid reuse of the same token (which is forbidden by the RFC.
+	 * @return mixed
+	 */
+	public function verify(string $otp, int $drift = 1, ?int $lastKnownCounter = null): TOTPResultInterface;
 
 	public function getDigits(): int;
 
