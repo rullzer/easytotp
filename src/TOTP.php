@@ -98,11 +98,30 @@ class TOTP implements TOTPInterface  {
 		$hash = hash_hmac(
 			$this->hashFunction,
 			pack('J', $counter),
-			$this->secret,
+			$this->prepareSecret(),
 			true
 		);
 
 		return str_pad((string)$this->truncate($hash), $this->digits, '0', STR_PAD_LEFT);
+	}
+
+	private function prepareSecret() {
+		$secretLength = 20;
+		if ($this->hashFunction === TOTPInterface::HASH_SHA256) {
+			$secretLength = 32;
+		}
+		if ($this->hashFunction === TOTPInterface::HASH_SHA512) {
+			$secretLength = 64;
+		}
+
+		$secret = $this->secret;
+
+		while(strlen($secret) < $secretLength) {
+			$secret .= $secret;
+		}
+
+		$secret = substr($secret, 0, $secretLength);
+		return $secret;
 	}
 
 	private function truncate(string $hash): int {
