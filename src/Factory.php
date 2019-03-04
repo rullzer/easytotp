@@ -26,18 +26,14 @@ namespace EasyTOTP;
 
 class Factory {
 
-	public static function getTOTP(string $secret, int $timeStep = 30, int $digits = 6, int $offset = 0): TOTPInterface {
+	public static function getTOTP(string $secret, int $timeStep = 30, int $digits = 6, int $offset = 0, string $hash = TOTPInterface::HASH_SHA1): TOTPInterface {
 		return new TOTP(
 			$secret,
 			$timeStep,
 			$digits,
 			$offset,
-			TOTPInterface::HASH_SHA1,
+			$hash,
 			new TimeService()
 		);
-	}
-
-	public static function generateSecret(int $length = 20) {
-
 	}
 }
