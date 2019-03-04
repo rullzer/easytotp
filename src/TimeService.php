@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace EasyOTP;
+namespace EasyTOTP;
 
 class TimeService {
 	public function getTime(): int {

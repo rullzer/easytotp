@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace EasyOTP;
+namespace EasyTOTP;
 
 interface TOTPValidResultInterface extends TOTPResultInterface {
 	public function getCounter(): int;

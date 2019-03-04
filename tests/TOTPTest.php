@@ -24,11 +24,11 @@ declare(strict_types=1);
 
 namespace EasyTOTP\Tests;
 
-use EasyOTP\TimeService;
-use EasyOTP\TOTP;
-use EasyOTP\TOTPInterface;
-use EasyOTP\TOTPInvalidResultInterface;
-use EasyOTP\TOTPValidResultInterface;
+use EasyTOTP\TimeService;
+use EasyTOTP\TOTP;
+use EasyTOTP\TOTPInterface;
+use EasyTOTP\TOTPInvalidResultInterface;
+use EasyTOTP\TOTPValidResultInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -134,8 +134,6 @@ class TOTPTest extends TestCase
 	 * @param int $counter
 	 */
 	public function testTimeDriftForward(int $time, string $otp, string $hashFunction, int $counter) {
-		$t = $time;
-		$x = $t + 30;
 		$this->timeService->method('getTime')
 			->willReturn($time+30);
 

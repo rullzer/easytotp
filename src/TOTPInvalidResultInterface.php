@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace EasyOTP;
+namespace EasyTOTP;
 
 interface TOTPInvalidResultInterface extends TOTPResultInterface {
 

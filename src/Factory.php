@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace EasyOTP;
+namespace EasyTOTP;
 
 class Factory {
 
@@ -35,5 +35,9 @@ class Factory {
 			TOTPInterface::HASH_SHA1,
 			new TimeService()
 		);
+	}
+
+	public static function generateSecret(int $length = 20) {
+
 	}
 }

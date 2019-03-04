@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace EasyOTP;
+namespace EasyTOTP;
 
 class TOTP implements TOTPInterface  {
 
@@ -136,11 +136,6 @@ class TOTP implements TOTPInterface  {
 	}
 
 	private function getCurrentCounter(): int {
-		$x = $this->timeService->getTime();
-		$y = $x + $this->offset;
-		$z = $y / $this->timeStep;
-		$z2 = floor($z);
-		$z3 = (int)$z2;
 		return (int)floor(($this->timeService->getTime() + $this->offset) / $this->timeStep);
 	}
 
