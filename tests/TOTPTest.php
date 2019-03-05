@@ -91,7 +91,7 @@ class TOTPTest extends TestCase
 			->willReturn($time);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->prepareSecret($this->secret, $hashFunction), $hashFunction),
 			30,
 			8,
 			0,
@@ -114,7 +114,7 @@ class TOTPTest extends TestCase
 			->willReturn($time-30);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -138,7 +138,7 @@ class TOTPTest extends TestCase
 			->willReturn($time+30);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -163,7 +163,7 @@ class TOTPTest extends TestCase
 			->willReturn($time);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -187,7 +187,7 @@ class TOTPTest extends TestCase
 			->willReturn($time);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -213,7 +213,7 @@ class TOTPTest extends TestCase
 			->willReturn($time+30);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -239,7 +239,7 @@ class TOTPTest extends TestCase
 			->willReturn($time-30);
 
 		$totp = new TOTP(
-			$this->secret,
+			$this->prepareSecret($this->secret, $hashFunction),
 			30,
 			8,
 			0,
@@ -250,5 +250,24 @@ class TOTPTest extends TestCase
 		$this->assertInstanceOf(TOTPValidResultInterface::class, $result);
 		$this->assertSame($counter, $result->getCounter());
 		$this->assertSame(1, $result->getDrift());
+	}
+
+	private function prepareSecret(string $secret, string $hashFunction) {
+		if ($hashFunction === TOTPInterface::HASH_SHA1) {
+			$secretLength = 20;
+		} else if ($hashFunction === TOTPInterface::HASH_SHA256) {
+			$secretLength = 32;
+		} else if ($hashFunction === TOTPInterface::HASH_SHA512) {
+			$secretLength = 64;
+		} else {
+			$this->fail('Invalid hash function');
+		}
+
+		while(strlen($secret) < $secretLength) {
+			$secret .= $secret;
+		}
+
+		$secret = substr($secret, 0, $secretLength);
+		return $secret;
 	}
 }
