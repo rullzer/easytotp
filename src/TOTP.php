@@ -91,13 +91,25 @@ class TOTP implements TOTPInterface  {
 		return $this->timeStep;
 	}
 
+	private function binaryCounter(int $counter): string {
+		if (PHP_INT_SIZE === 4) {
+			/*
+			 * Manually do 64bit magic
+			 * This will do boom in 2038 ;)
+			 */
+			return pack('N*', 0) . pack('N*', $counter);
+		}
+
+		return pack('J', $counter);
+	}
+
 	/**
 	 * See https://tools.ietf.org/html/rfc4226#section-5
 	 */
 	private function hotp(int $counter): string {
 		$hash = hash_hmac(
 			$this->hashFunction,
-			pack('J', $counter),
+			$this->binaryCounter($counter),
 			$this->secret,
 			true
 		);
